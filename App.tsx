@@ -1,5 +1,3 @@
-
-
 import React, { useState, useEffect } from 'react';
 import { Tab, Language, AssetDeclaration, User, MinistryContact, Translation, WorkGroup } from './types';
 import { TEXTS as DEFAULT_TEXTS, INITIAL_CONTACTS, INITIAL_ASSETS } from './constants';
@@ -101,8 +99,6 @@ const App: React.FC = () => {
       // Create new
       setAssets(prev => [savedAsset, ...prev]);
     }
-    // Note: We no longer auto-switch to Dashboard to keep flow inside Declaration Tab
-    // setActiveTab(Tab.DASHBOARD); 
   };
 
   const handleDeleteAsset = (id: string) => {
@@ -150,9 +146,6 @@ const App: React.FC = () => {
   const isRTL = lang === 'ar';
 
   if (!currentUser) {
-    // Pass appTexts to Login so the title is also dynamic there
-    // Pass contacts to Login to display Ministry Names in the list
-    // Pass handleAddContacts to allow creating new Ministries during registration
     return (
       <Login 
         lang={lang} 
@@ -197,13 +190,11 @@ const App: React.FC = () => {
           <h1 className="text-xl font-bold leading-tight">{appTexts.appTitle[lang]}</h1>
           <div className="flex items-center gap-2 mt-4 text-xs bg-gov-800 p-2 rounded text-gov-200">
              <div className="w-2 h-2 rounded-full bg-green-400"></div>
-             {/* Uses the user fullname which can now be edited in UserManagement */}
              <span className="truncate max-w-[140px]">{currentUser.fullName}</span>
           </div>
         </div>
         
         <nav className="flex-1 p-4 space-y-2">
-          {/* Use keys from appTexts to display navigation labels */}
           <NavItem tab={Tab.DASHBOARD} icon={LayoutDashboard} label={appTexts.dashboard ? appTexts.dashboard[lang] : DEFAULT_TEXTS.dashboard[lang]} />
           <NavItem tab={Tab.DIRECTORY} icon={Users} label={appTexts.directory ? appTexts.directory[lang] : DEFAULT_TEXTS.directory[lang]} />
           <NavItem tab={Tab.MAP} icon={MapIcon} label={appTexts.map ? appTexts.map[lang] : DEFAULT_TEXTS.map[lang]} />
@@ -318,8 +309,8 @@ const App: React.FC = () => {
                 onCancelEdit={() => {
                    setEditingAsset(null);
                 }}
-                assets={assets} // Pass all assets for list view
-                onDeleteAsset={handleDeleteAsset} // Pass delete handler
+                assets={assets}
+                onDeleteAsset={handleDeleteAsset}
               />
             )}
             {activeTab === Tab.ASSISTANT && canAccessTab(currentUser, Tab.ASSISTANT) && (

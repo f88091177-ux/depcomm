@@ -3,16 +3,13 @@ import react from '@vitejs/plugin-react'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => {
-  // Charge les variables d'environnement depuis .env ou le système
-  // Utilisation de process.cwd() avec cast pour éviter les erreurs TS strictes
+  // Charge les variables d'environnement
   const env = loadEnv(mode, (process as any).cwd(), '');
 
   return {
     plugins: [react()],
     define: {
-      // Injection sécurisée : si la clé est absente, on injecte une chaîne vide "" au lieu de undefined
       'process.env.API_KEY': JSON.stringify(env.API_KEY || ''),
-      // Polyfill de process.env pour éviter le crash "process is not defined"
       'process.env': {}
     },
     build: {
